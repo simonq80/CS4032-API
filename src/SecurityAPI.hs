@@ -45,19 +45,38 @@ instance ToJSON SecurityUser where
     toJSON (SecurityUser u p) =
         object ["username" .= u, "password" .= p]
 
+data ServerDetails = ServerDetails
+  { location :: String
+  , token :: String  
+  } deriving (Eq, Show)
+
+instance FromJSON ServerDetails where
+  parseJSON (Object o) =                -- note that we are using an alternative method for defining FromJSON here.
+    ServerDetails <$> o .: "location"     -- we could have used template supportK instead.
+         <*> o .: "token"
+
+  parseJSON _ = mzero
+
+instance ToJSON ServerDetails where
+    toJSON (ServerDetails l t) =
+        object ["location" .= l, "token" .= t]
+
 
 
 -- Next, the hackage API definition - this is the remote service
 -- This defines the functions we  want to be able to call. That is all there is to it. We can now call these funtions,
 -- passing in the apporpriate parameters, and returning the appropriate data from hackage.haskell.org.
 
-type SecurityAPI = "users" :> Get '[JSON] [SecurityUser]
-             :<|> "login" :> ReqBody '[JSON] SecurityUser :> Post '[JSON] Bool
+type SecurityAPI = "login" :> ReqBody '[JSON] SecurityUser :> Post '[JSON] (Maybe ServerDetails)
+             :<|> "adduser" :> ReqBody '[JSON] SecurityUser :> Post '[JSON] Bool
+             :<|> "removeuser" :> ReqBody '[JSON] SecurityUser :> Post '[JSON] Bool
+
 
 securityAPI :: Proxy SecurityAPI
 securityAPI = Proxy
 
-getSecurityUsers :: ClientM  [SecurityUser]
-getSecurityUser :: SecurityUser -> ClientM Bool
+loginSecurityUser :: SecurityUser -> ClientM (Maybe ServerDetails)
+addSecurityUser :: SecurityUser -> ClientM Bool
+removeSecurityUsers :: SecurityUser -> ClientM Bool
 
-getSecurityUsers :<|> getSecurityUser = client securityAPI
+loginSecurityUser :<|> addSecurityUser :<|> removeSecurityUsers = client securityAPI
