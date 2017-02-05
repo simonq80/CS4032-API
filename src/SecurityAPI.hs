@@ -18,6 +18,7 @@ import           GHC.Generics
 import           Network.HTTP.Client (defaultManagerSettings, newManager)
 import           Servant.API
 import           Servant.Client
+import           Data.Bson.Generic
 
 
 -- The purpose of this section is to explain how to perform a REST call on a remote service fro your own Servant
@@ -32,7 +33,10 @@ import           Servant.Client
 data SecurityUser = SecurityUser
   { username :: String
   , password  :: String
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Generic, ToBSON, FromBSON)
+
+deriving instance FromBSON String
+deriving instance ToBSON String
 
 instance FromJSON SecurityUser where
   parseJSON (Object o) =                -- note that we are using an alternative method for defining FromJSON here.
