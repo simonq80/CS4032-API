@@ -19,6 +19,7 @@ import           Network.HTTP.Client (defaultManagerSettings, newManager)
 import           Servant.API
 import           Servant.Client
 import           SecurityAPI
+import           Data.Bson.Generic
 
 -- The purpose of this section is to explain how to perform a REST call on a remote service fro your own Servant
 -- service. This code will be called from the Handler doRESTCall in the handler set above.
@@ -38,19 +39,10 @@ data FileDetails = FileDetails
   { fileid :: String
   , filename :: String
   , filecontents :: String
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Generic, ToBSON, FromBSON, ToJSON, FromJSON)
 
-instance FromJSON FileDetails where
-  parseJSON (Object o) =                -- note that we are using an alternative method for defining FromJSON here.
-    FileDetails <$> o .: "fileid"     -- we could have used template supportK instead.
-         <*> o .: "filename"
-         <*> o .: "filecontents"
 
-  parseJSON _ = mzero
 
-instance ToJSON FileDetails where
-    toJSON (FileDetails i n c) =
-        object ["fileid" .= i, "filename" .= n, "filecontents" .= c]
 
 type ClientProxyAPI = "setcredentials" :> ReqBody '[JSON] SecurityUser :> Post '[JSON] Bool
              :<|> "readfile" :> ReqBody '[JSON] FileDetails :> Post '[JSON] FileDetails

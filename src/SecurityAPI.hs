@@ -33,12 +33,12 @@ import           Data.Bson.Generic
 data SecurityUser = SecurityUser
   { username :: String
   , password  :: String
-  } deriving (Eq, Show, Generic, ToBSON, FromBSON)
+  } deriving (Eq, Show, Generic, ToBSON, FromBSON, ToJSON, FromJSON)
 
 deriving instance FromBSON String
 deriving instance ToBSON String
 
-instance FromJSON SecurityUser where
+{-|instance FromJSON SecurityUser where
   parseJSON (Object o) =                -- note that we are using an alternative method for defining FromJSON here.
     SecurityUser <$> o .: "username"     -- we could have used template supportK instead.
          <*> o .: "password"
@@ -47,24 +47,13 @@ instance FromJSON SecurityUser where
 
 instance ToJSON SecurityUser where
     toJSON (SecurityUser u p) =
-        object ["username" .= u, "password" .= p]
+        object ["username" .= u, "password" .= p]|-}
 
 data ServerDetails = ServerDetails
-  { location :: String
+  { serverip :: String
+  , serverport :: String
   , token :: String  
-  } deriving (Eq, Show)
-
-instance FromJSON ServerDetails where
-  parseJSON (Object o) =                -- note that we are using an alternative method for defining FromJSON here.
-    ServerDetails <$> o .: "location"     -- we could have used template supportK instead.
-         <*> o .: "token"
-
-  parseJSON _ = mzero
-
-instance ToJSON ServerDetails where
-    toJSON (ServerDetails l t) =
-        object ["location" .= l, "token" .= t]
-
+  } deriving (Eq, Show, Generic, ToBSON, FromBSON, ToJSON, FromJSON)
 
 
 -- Next, the hackage API definition - this is the remote service
