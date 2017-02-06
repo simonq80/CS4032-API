@@ -38,17 +38,6 @@ data SecurityUser = SecurityUser
 deriving instance FromBSON String
 deriving instance ToBSON String
 
-{-|instance FromJSON SecurityUser where
-  parseJSON (Object o) =                -- note that we are using an alternative method for defining FromJSON here.
-    SecurityUser <$> o .: "username"     -- we could have used template supportK instead.
-         <*> o .: "password"
-
-  parseJSON _ = mzero
-
-instance ToJSON SecurityUser where
-    toJSON (SecurityUser u p) =
-        object ["username" .= u, "password" .= p]|-}
-
 data ServerDetails = ServerDetails
   { serverip :: String
   , serverport :: String

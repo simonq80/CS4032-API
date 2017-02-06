@@ -41,6 +41,10 @@ data FileDetails = FileDetails
   , filecontents :: String
   } deriving (Eq, Show, Generic, ToBSON, FromBSON, ToJSON, FromJSON)
 
+data FileServerDetails = FileServerDetails
+  { filedetails :: FileDetails
+  , serverdetails :: ServerDetails
+  } deriving (Eq, Show, Generic, ToBSON, FromBSON, ToJSON, FromJSON)
 
 
 
