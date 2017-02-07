@@ -26,6 +26,7 @@ import           ClientProxyAPI
 
 type FileAPI = "readfile" :> ReqBody '[JSON] (FileDetails, ServerDetails):> Post '[JSON] (Maybe FileDetails)
              :<|> "writefile" :> ReqBody '[JSON] (FileDetails, ServerDetails) :> Post '[JSON] Bool
+             :<|> "addtoken" :> ReqBody '[JSON] ServerDetails :> Post '[JSON] Bool
 
 
 fileAPI :: Proxy FileAPI
