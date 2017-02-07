@@ -33,5 +33,6 @@ fileAPI = Proxy
 
 readFile :: (FileDetails, ServerDetails)-> ClientM (Maybe FileDetails)
 writeFile :: (FileDetails, ServerDetails) -> ClientM Bool
+addToken :: ServerDetails -> ClientM Bool
 
-readFile :<|> writeFile = client fileAPI
+readFile :<|> writeFile :<|> addToken = client fileAPI
