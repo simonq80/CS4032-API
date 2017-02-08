@@ -42,6 +42,13 @@ data FileDetails = FileDetails
   } deriving (Eq, Show, Generic, ToBSON, FromBSON, ToJSON, FromJSON)
 
 data FileServerDetails = FileServerDetails
-  { filedetails :: FileDetails
-  , serverdetails :: ServerDetails
+  { fileid1 :: String
+  , filename1 :: String
+  , filecontents1 :: String
+  , serverip1 :: String
+  , serverport1 :: String
+  , token1 :: String  
   } deriving (Eq, Show, Generic, ToBSON, FromBSON, ToJSON, FromJSON)
+
+newFileServerDetails :: FileDetails -> ServerDetails -> FileServerDetails
+newFileServerDetails f s = FileServerDetails (fileid f) (filename f) (filecontents f) (serverip s) (serverport s) (token s)
