@@ -8,7 +8,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 
-module FileAPI where -- (getSecurityUsers, getSecurityUser, getPackages, Package(..))  where
+module FileAPI where
 
 import           Control.Monad       (mzero)
 import           Data.Aeson
@@ -18,10 +18,7 @@ import           GHC.Generics
 import           Network.HTTP.Client (defaultManagerSettings, newManager)
 import           Servant.API
 import           Servant.Client
-import           SecurityAPI
-import           ClientProxyAPI
-
-
+import           APIDataTypes
 
 
 type FileAPI = "readfile" :> ReqBody '[JSON] (FileDetails, ServerDetails):> Post '[JSON] (Maybe FileDetails)

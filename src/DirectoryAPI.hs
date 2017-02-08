@@ -8,7 +8,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 
-module DirectoryAPI where -- (getSecurityUsers, getSecurityUser, getPackages, Package(..))  where
+module DirectoryAPI where
 
 import           Control.Monad       (mzero)
 import           Data.Aeson
@@ -18,11 +18,8 @@ import           GHC.Generics
 import           Network.HTTP.Client (defaultManagerSettings, newManager)
 import           Servant.API
 import           Servant.Client
-import           SecurityAPI
-import           ClientProxyAPI
+import           APIDataTypes
 
-
---getfilelocation returns location of file, or randomly chosen file server if no exists, or nothing if file is being written to
 
 
 type DirectoryAPI = "getfilelocation" :> ReqBody '[JSON] (FileDetails, ServerDetails):> Post '[JSON] (Maybe ServerDetails)
